@@ -18,14 +18,25 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    // Try to load user from localStorage on first render
+    const stored = localStorage.getItem('authUser');
+    return stored ? JSON.parse(stored) : null;
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Since we're using JWT cookies, we don't need to check localStorage
-    // The server will handle session validation through cookies
     setIsLoading(false);
   }, []);
+
+  // Persist user to localStorage whenever it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('authUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('authUser');
+    }
+  }, [user]);
 
   const login = async (formData: LoginFormData): Promise<boolean> => {
     try {
@@ -81,7 +92,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      setUser(null);
+  setUser(null);
+  localStorage.removeItem('authUser');
       setIsLoading(false);
     }
   };
