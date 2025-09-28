@@ -1,7 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "attendance-trackee/package.json", "use": "@vercel/static-build", "config": { "distDir": "attendance-trackee/dist" } }
+    {
+      "src": "attendance-trackee/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "attendance-trackee/dist" }
+    }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/attendance-trackee/dist/index.html" }
