@@ -51,8 +51,8 @@ A modern React + TypeScript web application for managing meeting attendance in o
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Surya0265/Attendance-Tracker-frontend-project.git
-   cd Attendance-Tracker-frontend-project/attendance-trackee
+   https://github.com/Students-Union-PSGTech/Attendance-Tracker-frontend
+   cd attendance-trackee
    ```
 
 2. **Install dependencies**
@@ -238,12 +238,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
    - Clear `node_modules` and reinstall: `rm -rf node_modules && npm install`
    - Check Node.js version compatibility
 
-### Getting Help
 
-- 📧 **Email**: [your-email@domain.com]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/Surya0265/Attendance-Tracker-frontend-project/issues)
-- 📖 **Documentation**: Check the `/docs` folder for detailed guides
-
----
-
-**Made with ❤️ by [Your Team Name]**
