@@ -82,7 +82,7 @@ export const globalAdminAPI = {
     return response.data;
   },
 
-  // Delete member directly (Global Admin)
+  // Delete member directly (Global Admin endpoint)
   deleteMember: async (roll_no: string) => {
     const response = await api.delete(`/globaladmin/members/${roll_no}`);
     return response.data;
@@ -215,7 +215,7 @@ export const verticalLeadAPI = {
 
   // Request member deletion (creates delete request for global admin)
   requestMemberDeletion: async (roll_no: string, reason?: string) => {
-    const response = await api.post('/verticalleads/members/delete-request', { 
+    const response = await api.post('/verticalleads/delete-requests', { 
       roll_no,
       reason 
     });

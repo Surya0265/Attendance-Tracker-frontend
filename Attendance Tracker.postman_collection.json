@@ -451,6 +451,34 @@
 								"description": "Get attendance summary for all members in the vertical (vertical lead only). Returns attended, not attended, total meetings, and percentage for each member."
 							},
 							"response": []
+						},
+						{
+							"name": "Create Delete Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roll_no\": \"23N233\",\r\n    \"reason\": \"Student graduated\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/verticalleads/delete-requests",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"verticalleads",
+										"delete-requests"
+									]
+								},
+								"description": "Create a delete request for a member. The reason field is optional. This request will be sent to the global admin for approval."
+							},
+							"response": []
 						}
 					]
 				},

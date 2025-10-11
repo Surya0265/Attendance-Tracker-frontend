@@ -14,6 +14,8 @@ import GlobalAdminAllAttendancePage from './pages/GlobalAdminAllAttendancePage';
 import AddVerticalHeadPage from './pages/AddVerticalHeadPage';
 import GlobalAdminVerticalAttendance from './pages/GlobalAdminVerticalAttendance';
 import DeleteRequestsPage from './pages/DeleteRequestsPage';
+import ManageMembersPage from './pages/ManageMembersPage';
+import VerticalHeadDeleteRequestPage from './pages/VerticalHeadDeleteRequestPage';
 
 import './App.css';
 
@@ -76,6 +78,14 @@ function App() {
                 </ProtectedRoute>
               }   
             />
+            <Route
+              path="/vertical-head/delete-request"
+              element={
+                <ProtectedRoute allowedRoles={['vertical_head']}>
+                  <VerticalHeadDeleteRequestPage />
+                </ProtectedRoute>
+              }   
+            />
             
             {/* Protected Routes - Global Admin */}
             <Route 
@@ -91,6 +101,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['global_admin']}>
                   <AddVerticalHeadPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/manage-members" 
+              element={
+                <ProtectedRoute allowedRoles={['global_admin']}>
+                  <ManageMembersPage />
                 </ProtectedRoute>
               } 
             />

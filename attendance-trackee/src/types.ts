@@ -22,6 +22,7 @@ export interface Meeting {
   date: string;
   m_o_m?: string;
   vertical?: string;
+  created_by?: string;
   created_at?: string;
   updated_at?: string;
 }

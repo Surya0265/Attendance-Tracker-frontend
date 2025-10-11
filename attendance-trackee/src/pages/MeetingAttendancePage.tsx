@@ -96,6 +96,9 @@ const MeetingAttendancePage: React.FC = () => {
   };
 
   const handleAttendanceChange = (rollNo: string, isPresent: boolean) => {
+    // Allow global admin to edit attendance only for meetings they created (OB meetings)
+    if (user?.role === 'global_admin' && meeting?.created_by !== 'OB') return;
+    
     setAttendance(prev => ({
       ...prev,
       [rollNo]: isPresent
@@ -266,7 +269,10 @@ const MeetingAttendancePage: React.FC = () => {
             <div className="text-sm text-gray-600 dark:text-gray-300">
               <span className="font-medium text-green-600 dark:text-emerald-300">{getPresentCount()}</span> present out of{' '}
               <span className="font-medium text-gray-900 dark:text-gray-100">{members.length}</span> members
-              {hasUnsavedChanges && (
+              {user?.role === 'global_admin' && meeting?.created_by !== 'OB' && (
+                <span className="ml-4 text-blue-600 dark:text-blue-300 font-medium">● Read-only view</span>
+              )}
+              {hasUnsavedChanges && (user?.role !== 'global_admin' || meeting?.created_by === 'OB') && (
                 <span className="ml-4 text-amber-600 dark:text-amber-300 font-medium">● Unsaved changes</span>
               )}
             </div>
@@ -284,9 +290,20 @@ const MeetingAttendancePage: React.FC = () => {
         <div className="bg-white/80 dark:bg-slate-900/80 rounded-lg shadow-sm border border-gray-200 dark:border-slate-800 overflow-hidden transition-colors">
           <div className="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Mark Attendance</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                {user?.role === 'global_admin' 
+                  ? (meeting?.created_by === 'OB' ? 'Manage Attendance' : 'View Attendance')
+                  : 'Mark Attendance'
+                }
+              </h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                Check the boxes to mark members as present
+                {user?.role === 'global_admin' 
+                  ? (meeting?.created_by === 'OB' 
+                      ? 'Check the boxes to mark members as present or absent'
+                      : 'Attendance records for this meeting (read-only)'
+                    )
+                  : 'Check the boxes to mark members as present'
+                }
               </p>
             </div>
             <div className="w-full sm:w-64">
@@ -312,24 +329,37 @@ const MeetingAttendancePage: React.FC = () => {
               {filteredMembers.map((member) => (
                 <div key={member.roll_no} className="px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors">
                   <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`attendance-${member.roll_no}`}
-                      checked={attendance[member.roll_no] || false}
-                      onChange={(e) => handleAttendanceChange(member.roll_no, e.target.checked)}
-                      className="h-5 w-5 sm:h-4 sm:w-4 text-primary-600 border-gray-300 dark:border-slate-700 rounded focus:ring-primary-500 focus:ring-offset-0"
-                    />
-                    <div className="ml-4">
-                      <label 
-                        htmlFor={`attendance-${member.roll_no}`} 
-                        className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer select-none"
-                      >
-                        {member.name}
-                      </label>
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                        {member.roll_no} • {member.department} • Year {member.year}
-                      </p>
-                    </div>
+                    {(user?.role !== 'global_admin' || meeting?.created_by === 'OB') ? (
+                      <>
+                        <input
+                          type="checkbox"
+                          id={`attendance-${member.roll_no}`}
+                          checked={attendance[member.roll_no] || false}
+                          onChange={(e) => handleAttendanceChange(member.roll_no, e.target.checked)}
+                          className="h-5 w-5 sm:h-4 sm:w-4 text-primary-600 border-gray-300 dark:border-slate-700 rounded focus:ring-primary-500 focus:ring-offset-0"
+                        />
+                        <div className="ml-4">
+                          <label 
+                            htmlFor={`attendance-${member.roll_no}`} 
+                            className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer select-none"
+                          >
+                            {member.name}
+                          </label>
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                            {member.roll_no} • {member.department} • Year {member.year}
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                          {member.name}
+                        </div>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                          {member.roll_no} • {member.department} • Year {member.year}
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -346,8 +376,8 @@ const MeetingAttendancePage: React.FC = () => {
           )}
         </div>
 
-        {/* Save Button */}
-        {members.length > 0 && (
+        {/* Save Button - Show for vertical heads and global admins who created the meeting */}
+        {members.length > 0 && (user?.role !== 'global_admin' || meeting?.created_by === 'OB') && (
           <div className="mt-8 flex justify-center sm:justify-end">
             <button
               onClick={handleSaveChanges}
