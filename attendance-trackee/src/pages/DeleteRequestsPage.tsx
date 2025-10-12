@@ -20,7 +20,7 @@ interface DeleteRequest {
 }
 
 const DeleteRequestsPage: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [requests, setRequests] = useState<DeleteRequest[]>([]);
   const [loading, setLoading] = useState(true);

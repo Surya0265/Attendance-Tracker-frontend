@@ -14,7 +14,7 @@ interface VerticalLead {
 }
 
 const GlobalAdminVerticalAttendance: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [verticals, setVerticals] = useState<string[]>([]);
   const [selectedVertical, setSelectedVertical] = useState<string>('');

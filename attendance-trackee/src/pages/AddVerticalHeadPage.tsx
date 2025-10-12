@@ -22,7 +22,7 @@ interface CreateLeadForm {
 }
 
 const AddVerticalHeadPage: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [verticalLeads, setVerticalLeads] = useState<VerticalLead[]>([]);
   const [loading, setLoading] = useState(true);
