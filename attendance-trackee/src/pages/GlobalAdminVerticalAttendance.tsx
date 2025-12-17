@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { globalAdminOperationsAPI, globalAdminAPI } from '../api';
 import ThemeToggle from '../components/ThemeToggle';
+import BackButton from '../components/BackButton';
 import type { Meeting } from '../types';
 
 interface VerticalLead {
@@ -47,7 +48,7 @@ const GlobalAdminVerticalAttendance: React.FC = () => {
       // Fetch all vertical leads to get unique verticals
       const leadsResponse = await globalAdminAPI.getVerticalLeads();
       let leadsData: VerticalLead[] = [];
-      
+
       if (Array.isArray(leadsResponse)) {
         leadsData = leadsResponse;
       } else if (leadsResponse?.vertical_leads && Array.isArray(leadsResponse.vertical_leads)) {
@@ -116,7 +117,7 @@ const GlobalAdminVerticalAttendance: React.FC = () => {
       setLoadingSummary(true);
       setError('');
       const response = await globalAdminAPI.getAllVerticalsAttendanceSummary();
-      
+
       if (response.attendance_summary && Array.isArray(response.attendance_summary)) {
         // Filter summary for selected vertical
         const verticalSummary = response.attendance_summary.filter(
@@ -144,23 +145,20 @@ const GlobalAdminVerticalAttendance: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-500 relative">
+      {/* Back Button - Top Left Corner */}
+      <BackButton onClick={() => navigate('/admin/dashboard')} className="absolute top-4 left-4 z-10" label="Back to Dashboard" />
+
       <header className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-slate-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
+            <div className="pl-12">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Vertical Attendance</h1>
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 View attendance records across all verticals
               </p>
             </div>
             <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-              <button
-                onClick={() => navigate('/admin/dashboard')}
-                className="inline-flex w-full items-center justify-center px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-100 bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 sm:w-auto"
-              >
-                Back to Dashboard
-              </button>
               <ThemeToggle className="mx-auto sm:mx-0" />
               <button
                 onClick={handleLogout}
@@ -346,13 +344,12 @@ const GlobalAdminVerticalAttendance: React.FC = () => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                (item.percentage || 0) >= 75 
-                                  ? 'bg-green-100 dark:bg-green-600/30 text-green-800 dark:text-green-200'
-                                  : (item.percentage || 0) >= 50
+                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${(item.percentage || 0) >= 75
+                                ? 'bg-green-100 dark:bg-green-600/30 text-green-800 dark:text-green-200'
+                                : (item.percentage || 0) >= 50
                                   ? 'bg-yellow-100 dark:bg-yellow-600/30 text-yellow-800 dark:text-yellow-200'
                                   : 'bg-red-100 dark:bg-red-600/30 text-red-800 dark:text-red-200'
-                              }`}>
+                                }`}>
                                 {item.percentage != null ? `${item.percentage}%` : 'N/A'}
                               </span>
                             </div>
