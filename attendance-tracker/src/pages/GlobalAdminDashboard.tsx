@@ -8,7 +8,7 @@ import ThemeToggle from '../components/ThemeToggle';
 import type { Meeting } from '../types';
 
 const GlobalAdminDashboard: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState(true);
@@ -387,10 +387,7 @@ const GlobalAdminDashboard: React.FC = () => {
                     </button>
                   )}
                   <div className="ml-4 lg:ml-0">
-                    <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Global Admin Dashboard</h1>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Welcome back, {user?.name || user?.username}
-                    </p>
+                    <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Office Bearers Dashboard</h1>
                   </div>
                 </div>
               </div>

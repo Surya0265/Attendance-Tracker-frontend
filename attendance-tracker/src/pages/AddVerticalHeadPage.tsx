@@ -382,6 +382,8 @@ const AddVerticalHeadPage: React.FC = () => {
                       <option value="Sponsorship & PR">Sponsorship & PR</option>
                       <option value="Photography">Photography</option>
                       <option value="Ambience">Ambience</option>
+                      <option value="Design">Design</option>
+                      <option value="Video Editing">Video Editing</option>
                     </select>
                   </div>
                   <div className="flex gap-3 pt-4">
