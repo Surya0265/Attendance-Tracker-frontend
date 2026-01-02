@@ -435,7 +435,7 @@ const GlobalAdminDashboard: React.FC = () => {
             <MemberCountCard
               data={memberCounts}
               loading={memberCountsLoading}
-              title="Member Statistics by Vertical"
+              title="Members by Vertical"
               showTotal={true}
             />
 
